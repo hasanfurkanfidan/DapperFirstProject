@@ -45,13 +45,20 @@ namespace DapperFirstProject
             //con.Execute("delete from Products where Id=@id", new[] { new { id = 1 }, new { id = 2 } });
             //var value = con.ExecuteScalar("select name from products");
             //Console.WriteLine(value.ToString());
-            var products = con.Query("select*from products");
+            var products = con.Query<Product>("select*from products");
             foreach (var item in products)
             {
                 Console.WriteLine(item.Name);
             }
-            
-           
+
+
         }
+    }
+   public class Product
+    {
+        public int Id { get; set; }
+        public string Name { get; set; }
+        public int Stock { get; set; }
+        public decimal Price { get; set; }
     }
 }
