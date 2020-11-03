@@ -36,11 +36,11 @@ namespace DapperFirstProject
             //price = 5000,
             //stock=50
             //});
-            con.Execute("insert into products values(@name,@price,@stock)",new[] {
-            new{name="Tv",price=6000,stock=5},
-            new{name="Mouse",price=50,stock=50},
-            });
-
+            //con.Execute("insert into products values(@name,@price,@stock)",new[] {
+            //new{name="Tv",price=6000,stock=5},
+            //new{name="Mouse",price=50,stock=50},
+            //});
+            con.Execute("update products set name='kitap',stock=500 where Id=2");
 
         }
     }
