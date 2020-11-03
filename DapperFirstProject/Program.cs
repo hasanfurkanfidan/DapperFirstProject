@@ -30,12 +30,17 @@ namespace DapperFirstProject
             var con = new SqlConnection();
             con.ConnectionString = "server=DESKTOP-3VB3SSC\\SQLEXPRESS;database=DAPPERDB;integrated security=true";
 
-            //con.Execute("insert into products values('Klavye',20,100)");
-            con.Execute("insert into products values(@name,@price,@stock)",new { 
-            name = "Laptop",
-            price = 5000,
-            stock=50
+            ////con.Execute("insert into products values('Klavye',20,100)");
+            //con.Execute("insert into products values(@name,@price,@stock)",new { 
+            //name = "Laptop",
+            //price = 5000,
+            //stock=50
+            //});
+            con.Execute("insert into products values(@name,@price,@stock)",new[] {
+            new{name="Tv",price=6000,stock=5},
+            new{name="Mouse",price=50,stock=50},
             });
+
 
         }
     }
