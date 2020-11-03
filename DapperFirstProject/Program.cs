@@ -40,7 +40,8 @@ namespace DapperFirstProject
             //new{name="Tv",price=6000,stock=5},
             //new{name="Mouse",price=50,stock=50},
             //});
-            con.Execute("update products set name='kitap',stock=500 where Id=2");
+            //con.Execute("update products set name='kitap',stock=500 where Id=2");
+            con.Execute("delete from Products where Id=@id", new[] { new { id = 1 }, new { id = 2 } });
 
         }
     }
