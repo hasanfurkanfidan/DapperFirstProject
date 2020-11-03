@@ -1,5 +1,6 @@
 ﻿using Dapper;
 using System;
+using System.Collections.Generic;
 using System.Data.SqlClient;
 using System.Linq;
 
@@ -7,14 +8,14 @@ namespace DapperFirstProject
 {
     class Program
     {
-//        GO
-//CREATE TABLE PRODUCTS(
-//Id int identity(1,1),
-//Name nvarchar(100),
-//Price decimal (18,3),
-//Stock int,
-//primary key(Id)
-//)
+        //        GO
+        //CREATE TABLE PRODUCTS(
+        //Id int identity(1,1),
+        //Name nvarchar(100),
+        //Price decimal (18,3),
+        //Stock int,
+        //primary key(Id)
+        //)
         static void Main(string[] args)
         {
 
@@ -45,20 +46,63 @@ namespace DapperFirstProject
             //con.Execute("delete from Products where Id=@id", new[] { new { id = 1 }, new { id = 2 } });
             //var value = con.ExecuteScalar("select name from products");
             //Console.WriteLine(value.ToString());
-            var products = con.Query<Product>("select*from products");
+            //var products = con.Query<Product>("select*from products");
+            //foreach (var item in products)
+            //{
+            //    Console.WriteLine(item.Name);
+            //}
+            var productDictionary = new Dictionary<int,Product>();
+           var products =  con.Query<Product,ProductCategory,Product>(@"Select * from PRODUCTS inner join ProductCategories on   PRODUCTS.Id = ProductCategories.ProductId   where  ProductCategories.CategoryId=4 ",(product,productCategory)=> {
+               Product otherProduct;
+               if (!productDictionary.TryGetValue(product.Id,out otherProduct))
+               {
+                   otherProduct = product;
+                   otherProduct.ProductCategories = new List<ProductCategory>();
+                   productDictionary.Add(product.Id, product);
+               }
+               otherProduct.ProductCategories.Add(productCategory);
+               return otherProduct;
+            }).Distinct().ToList();
+
             foreach (var item in products)
             {
                 Console.WriteLine(item.Name);
             }
 
 
+
+
+
         }
     }
-   public class Product
+    public class Product
     {
         public int Id { get; set; }
         public string Name { get; set; }
         public int Stock { get; set; }
         public decimal Price { get; set; }
+        public List<ProductCategory> ProductCategories { get; set; }
+    }
+    public class ProductCategory
+    {
+        public int Id { get; set; }
+
+        public int CategoryId { get; set; }
+
+        public int ProductId { get; set; }
+
+        public Category Category { get; set; }
+
+        public Product Product { get; set; }
+    }
+    public class Category
+    {
+        public int Id { get; set; }
+
+        public string Name { get; set; }
+
+        public List<ProductCategory> ProductCategories { get; set; }
+
+
     }
 }
