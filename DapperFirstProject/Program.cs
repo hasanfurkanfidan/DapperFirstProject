@@ -1,6 +1,7 @@
 ﻿using Dapper;
 using System;
 using System.Data.SqlClient;
+using System.Linq;
 
 namespace DapperFirstProject
 {
@@ -42,8 +43,15 @@ namespace DapperFirstProject
             //});
             //con.Execute("update products set name='kitap',stock=500 where Id=2");
             //con.Execute("delete from Products where Id=@id", new[] { new { id = 1 }, new { id = 2 } });
-            var value = con.ExecuteScalar("select name from products");
-            Console.WriteLine(value.ToString());
+            //var value = con.ExecuteScalar("select name from products");
+            //Console.WriteLine(value.ToString());
+            var products = con.Query("select*from products");
+            foreach (var item in products)
+            {
+                Console.WriteLine(item.Name);
+            }
+            
+           
         }
     }
 }
